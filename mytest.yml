@@ -1,0 +1,13 @@
+---
+- name: testing vault
+  hots: all
+  become: true
+
+
+  tasks:
+  - name: testing vault
+    yum:
+      name: httpd
+      state: installed
+
+    

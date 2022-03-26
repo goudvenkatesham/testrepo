@@ -1,0 +1,10 @@
+---
+- name: Installing package
+  hosts: webservers
+  become: true
+
+  tasks:
+  - name: Installing tree
+    yum:
+      name: ["tree", "docker*", "git", "mysql" ]
+      state: installed

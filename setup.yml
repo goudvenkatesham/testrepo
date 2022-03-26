@@ -1,0 +1,43 @@
+---
+- name: Set up tomact
+  hosts: all
+  become: true
+
+  tasks:
+   - name: Install java on RedHat
+     yum:
+       name: java
+       state: installed
+     when: ansible_os_family == "RedHat"
+
+   - name: Install java on Ubuntu
+     apt:
+       name: default-jdk
+       state: present
+     when: ansible_os_family == "Debian"
+   
+   - name: Download tomcat package 
+     get_url:
+       url: https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.18/bin/apache-tomcat-10.0.18.tar.gz
+       dest: /opt
+    
+   - name: extarct tomcat
+     unarchive:
+       src:  /opt/apache-tomcat-10.0.18.tar.gz
+       dest: /opt
+       remote_src: yes
+
+   - name: Executable permisson to startup.sh file 
+     file:
+       path: /opt/apache-tomcat-10.0.18/bin/startup.sh
+       mode: 0777 
+
+
+   - name: start tomact service
+     shell: nohup ./startup.sh
+     args:
+        chdir: /opt/apache-tomcat-10.0.18/bin
+
+
+      
+
